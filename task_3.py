@@ -4,23 +4,28 @@ from boyer_moore_search import boyer_moore_search
 from kmp_search import kmp_search
 from rabin_karp_search import rabin_karp_search
 
-article_1 = open("article_1.txt", "r", encoding='utf-8').read()
-article_2 = open("article_2.txt", "r", encoding='utf-8').read()
+with open("article_1.txt", "r", encoding='utf-8') as file:
+    article_1 = file.read()
 
-results = {}
+with open("article_2.txt", "r", encoding='utf-8') as file:
+    article_2 = file.read()
+
 articles = [
     {"id": 'article_1', "article": article_1, "patterns": ['Структури даних', 'Fake pattern']},
     {"id": 'article_2', "article": article_2, "patterns": ["До кожної сесії", "Fake pattern"]}
 ]
 
+results = {}
+
 def measure_time(search_func, data, pattern):
     return timeit.timeit(lambda: search_func(data, pattern), number=1)
 
 for article in articles:
-    article_id = article.get('id')
-    data = article.get('article')
+    article_id = article['id']
+    data = article['article']
     results[article_id] = {}
-    for pattern in article.get("patterns"):
+    
+    for pattern in article["patterns"]:
         boyer_moore_search_time = measure_time(boyer_moore_search, data, pattern)
         kmp_search_time = measure_time(kmp_search, data, pattern)
         rabin_karp_search_time = measure_time(rabin_karp_search, data, pattern)
